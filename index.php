@@ -1,3 +1,31 @@
+<?php
+
+require_once 'app/init.php';
+
+$itemsQuery = $db->prepare("
+
+    SELECT id, name, done
+    FROM items
+    WHERE user = :user
+
+");
+
+$itemsQuery->execute([
+  'user' => $_SESSION['user_id']
+]);
+
+$items = $itemsQuery->rowCount() ? $itemsQuery : [];
+
+foreach($items as $items){
+  echo $items['name'], '<br>';
+}
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,9 +47,6 @@
           <li>
             <span class="item">Pick up shopping</span>
             <a href="#" class="done-button">Mark as done</a>
-          </li>
-          <li>
-            <span class="item done">Learn php</span>
           </li>
         </ul>
 
